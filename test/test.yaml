@@ -1,0 +1,69 @@
+version: '3.1'
+
+services:
+
+  pgpool:
+    image: robobeerun/crunchy-pgpool:latest
+    ports:
+      - "5432"
+    links:
+      - "db-primary:primary"
+      - "db-replica:replica"
+    environment:
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_PASSWORD=password
+      - PG_PRIMARY_SERVICE_NAME=primary
+      - PG_REPLICA_SERVICE_NAME=replica
+      - PG_USERNAME=testdb
+      - PG_PASSWORD=testdb
+      - PG_DATABASE=testdb
+    volumes:
+      - "./pgpool-in:/pgconf/pgpoolconfigdir"
+
+  db-primary:
+    image: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
+    ports:
+      - "5432"
+    volumes:
+      - "./root/postgres/primary:/pgdata"
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=101
+      - SHARED_BUFFERS=128MB
+      - MAX_WAL_SENDERS=7
+      - WORK_MEM=5MB
+      - TEMP_BUFFERS=9MB
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_HOST=db-primary
+      - PG_PRIMARY_PASSWORD=password
+      - PG_PRIMARY_PORT=5432
+      - PG_MODE=primary
+      - PG_USER=testdb
+      - PG_PASSWORD=testdb
+      - PG_ROOT_PASSWORD=password
+      - PG_DATABASE=testdb
+
+  db-replica:
+    image: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
+    ports:
+      - "5432"
+    volumes:
+      - "./root/postgres/replica:/pgdata"
+    links:
+      - db-primary
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=101
+      - SHARED_BUFFERS=128MB
+      - MAX_WAL_SENDERS=7
+      - WORK_MEM=5MB
+      - TEMP_BUFFERS=9MB
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_HOST=db-primary
+      - PG_PRIMARY_PORT=5432
+      - PG_PRIMARY_PASSWORD=password
+      - PG_MODE=replica
+      - PG_USER=testdb
+      - PG_PASSWORD=testdb
+      - PG_ROOT_PASSWORD=password
+      - PG_DATABASE=testdb
