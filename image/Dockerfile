@@ -9,8 +9,11 @@ ADD /rootfs /
 
 RUN set -x \
   && chown daemon.daemon /opt/cpm/bin/*.sh \
-  && chmod +x /opt/cpm/bin/*.sh
+  && chmod +x /opt/cpm/bin/*.sh \
+  && chmod +x /*.sh
 
 USER daemon
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["/opt/cpm/bin/startpgpool.sh"]

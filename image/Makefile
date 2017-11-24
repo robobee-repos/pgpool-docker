@@ -1,6 +1,6 @@
 REPOSITORY := robobeerun
-NAME := crunchy-pgpool
-VERSION ?= centos7-9.6.6-1.7.0-r1
+NAME := pgpool
+VERSION ?= centos7-9.6.6-1.7.0-r2-1
 
 build: _build ##@targets Builds the docker image.
 

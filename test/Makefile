@@ -14,12 +14,10 @@ rm: stop ##@targets Stops test containers.
 	docker-compose -p $(NAME) -f test.yaml rm -f
 
 clean: stop rm ##@targets Removes docker containers and created files.
-	sudo chown `id -u`.`id -g` -R ./pgpool-in
 	sudo rm -rf root
 
 setup:
-	sudo chmod o+rwX -R ./pgpool-in
-	for p in gitea postgres/primary postgres/replica; do \
+	for p in pgconf postgres/primary postgres/replica; do \
 	mkdir -p root/$$p; \
 	chmod o+rwX root/$$p ; \
 	done

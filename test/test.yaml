@@ -3,13 +3,14 @@ version: '3.1'
 services:
 
   pgpool:
-    image: robobeerun/crunchy-pgpool:latest
+    image: robobeerun/pgpool:latest
     ports:
       - "5432"
     links:
       - "db-primary:primary"
       - "db-replica:replica"
     environment:
+      - DEBUG=true
       - PG_PRIMARY_USER=primaryuser
       - PG_PRIMARY_PASSWORD=password
       - PG_PRIMARY_SERVICE_NAME=primary
@@ -18,7 +19,8 @@ services:
       - PG_PASSWORD=testdb
       - PG_DATABASE=testdb
     volumes:
-      - "./pgpool-in:/pgconf/pgpoolconfigdir"
+      - "./pgpool-in:/pgpool-in"
+      - "./root/pgpool:/pgpool"
 
   db-primary:
     image: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
