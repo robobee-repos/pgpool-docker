@@ -20,7 +20,7 @@ services:
       - PG_DATABASE=testdb
     volumes:
       - "./pgpool-in:/pgpool-in"
-      - "./root/pgpool:/pgpool"
+      - "./root/pgconf:/pgconf"
 
   db-primary:
     image: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0

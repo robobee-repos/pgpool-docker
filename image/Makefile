@@ -1,6 +1,6 @@
 REPOSITORY := robobeerun
 NAME := pgpool
-VERSION ?= centos7-9.6.6-1.7.0-r2-1
+VERSION ?= centos7-9.6.6-1.7.0-r2
 
 build: _build ##@targets Builds the docker image.
 

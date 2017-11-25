@@ -2,6 +2,11 @@ FROM crunchydata/crunchy-pgpool:centos7-9.6.6-1.7.0
 
 USER root
 
+RUN set -x \
+  && yum -y install \
+    rsync \
+  && yum -y clean all
+
 # pgpool Communication Manager Connection
 EXPOSE 9898
 
